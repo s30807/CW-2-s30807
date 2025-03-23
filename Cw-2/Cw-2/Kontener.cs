@@ -17,16 +17,16 @@ namespace Cw_2
         public string nrSeryjny { get; } = "KON-";
         private static int IdCount=0;
         private float maxLadownosc;
-        private string rodzaj;
+        public string rodzaj { get; }
 
         //Plyny
         public bool niebezpieczny{ get; set; } // Auto-property
         //Gaz
-        private float cisnienie{ get; set; }
+        public float cisnienie{ get; set; }
         //Chlodniczy
-        private string rodzajProduktu{ get; set; }
-        private float aktualnaTemp{ get; set; }
-        private float wymaganaTemp{ get; set; }
+        public string rodzajProduktu{ get; set; }
+        public float aktualnaTemp{ get; set; }
+        public float wymaganaTemp{ get; set; }
 
         public Kontener(float wys, float wagaWlas, float gleb, float maxLad, string rodzaj)
         {
@@ -37,9 +37,6 @@ namespace Cw_2
             this.maxLadownosc = maxLad;
             this.nrSeryjny += rodzaj + "-"+IdCount++;
             this.rodzaj = rodzaj;
-            //Plyny - ustalenie czy niebezpieczny poprzez setter
-            //Gaz   - ustalenie cisnienia poprzez setter
-            //Chlodniczy - ustalenie rodzaju poprzez setter
         }
 
         public void Zaladunek(float ladunek)
@@ -52,13 +49,14 @@ namespace Cw_2
                     Console.WriteLine("Kontener z niebezpiecznym ladunkiem - do 50% pojemnosci: "+maxLadownosc/2 + " kg.");
                     if (ladunek > maxLadownosc / 2)
                     {
-                        masaLadunku = maxLadownosc / 2;
+                        this.masaLadunku = maxLadownosc / 2;
                         Console.WriteLine("Zaladowano tylko: "+ masaLadunku+"kg ladunku.");
                         NotifyHazard();
+                        Console.ReadLine();
                     }
                     else
                     {
-                        masaLadunku = ladunek;
+                        this.masaLadunku = ladunek;
                     }
                 }
                 else
@@ -66,25 +64,30 @@ namespace Cw_2
                     Console.WriteLine("Kontener z bezpiecznym ladunkiem - do 90% pojemnosci: " + maxLadownosc*0.9 + " kg.");
                     if (ladunek > maxLadownosc * 0.9)
                     {
-                        masaLadunku = (float)(maxLadownosc * 0.9);
+                        this.masaLadunku = (float)(maxLadownosc * 0.9);
                         Console.WriteLine("Zaladowano tylko: " + masaLadunku + "kg ladunku.");
                         NotifyHazard();
+                        Console.ReadLine();
                     }
                     else
                     {
-                        masaLadunku = ladunek;
+                        this.masaLadunku = ladunek;
                     }
                 }
             }else if (rodzaj.Equals("G")) //gaz
             {
+                Console.WriteLine("Podaj cisnienie w atmosferach: ");
+                this.cisnienie = float.Parse(Console.ReadLine());
+
                 if (ladunek > maxLadownosc)
                 {
-                    ladunek = maxLadownosc;
+                    this.masaLadunku = maxLadownosc;
                     Console.WriteLine("Kontener zaladowany w 100%.");
                     NotifyHazard();
+                    Console.ReadLine();
                 } else
                 {
-                    ladunek = masaLadunku;
+                    this.masaLadunku = ladunek;
                 }
             }
             else if (rodzaj.Equals("C")) //chlodniczy
@@ -95,22 +98,25 @@ namespace Cw_2
                 {
                     Console.WriteLine("Bledny rodzaj produktu.");
                     NotifyHazard();
+                    Console.ReadLine();
                 }
                 else if (aktualnaTemp < wymaganaTemp)
                 {
                     Console.WriteLine("Temperatura kontenera za niska");
+                    Console.ReadLine();
                 }
                 else 
                 {
                     if (ladunek > maxLadownosc)
                     {
-                        ladunek = maxLadownosc;
+                        this.masaLadunku = maxLadownosc;
                         Console.WriteLine("Kontener zaladowany w 100%.");
                         NotifyHazard();
+                        Console.ReadLine();
                     }
                     else
                     {
-                        ladunek = masaLadunku;
+                        this.masaLadunku = ladunek;
                     }
                 }
             }
@@ -120,7 +126,7 @@ namespace Cw_2
         {
             if (rodzaj.Equals("G"))//przy oproznianiu gazu zostawiamy 5%
             {
-                masaLadunku = (float)(masaLadunku * 0.5);
+                masaLadunku = (float)(masaLadunku * 0.05);
             }
             else
             {

@@ -11,9 +11,9 @@ namespace Cw_2
     {
         public string nazwa { get; }
         public List<Kontener> kontenery { get; } = new List<Kontener>();  //lista kontenerow na statku
-        private float maxPredkosc;
-        private float maxLiczbaKontenerow;
-        private float maxWagaKontenerow; //w tonach
+        public float maxPredkosc { get; }
+        public float maxLiczbaKontenerow { get; }
+        public float maxWagaKontenerow { get; } //w tonach
 
 
         public Kontenerowiec(string nazwa, float predkosc, float liczbaKontenerow, float maxWagaKon)
@@ -29,20 +29,7 @@ namespace Cw_2
             kontenery.Add(kontener);
         }
 
-        public void ZdejmijKontener()
-        {
-            string nazwaKontenera = Console.ReadLine();
-            var kontener = kontenery.Find(k => k.nrSeryjny == nazwaKontenera);
-            if (kontener == null)
-            {
-                Console.WriteLine("Kontener nie istnieje. Wciśnij Enter.");
-                Console.ReadLine();
-                return;
-            }
-            //TO DO: Remove
-        }
-
-        public void UsunKontener(int nrSeryjny)
+        public void UsunKontener(string nrSeryjny)
         {
             for (int i = 0; i < kontenery.Count; i++)
             {
